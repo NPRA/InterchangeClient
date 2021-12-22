@@ -41,9 +41,9 @@ public class NW3client implements MessageListener
 	 * @param createProducer Will we produce messages
 	 * @param callback	Callback class. Runs when we receive messages.
 	 */
-    public void init(boolean createConsumer, boolean createProducer, MessageListener callback)
-    {
-    	try
+	public void init(boolean createConsumer, boolean createProducer, MessageListener callback)
+	{
+		try
 		{
 			Context context = new InitialContext();
 			
@@ -51,17 +51,17 @@ public class NW3client implements MessageListener
 			factory.setPopulateJMSXUserID(true);
 			
 			System.out.println( Color.GREEN+"Connecting to: "+factory.getRemoteURI());
-            Destination queueR = (Destination) context.lookup("ReadQueue");
-            Destination queueS = (Destination) context.lookup("WriteQueue");
-            System.out.println( Color.GREEN+"rece queue: "+queueR.toString());
-            System.out.println( Color.GREEN+"send queue: "+queueS.toString());
-            
-            connection = factory.createConnection();
-            connection.start();
-            
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            if(createConsumer) messageConsumer = session.createConsumer(queueR);
-            if(createConsumer) messageConsumer.setMessageListener(callback);
+			Destination queueR = (Destination) context.lookup("ReadQueue");
+			Destination queueS = (Destination) context.lookup("WriteQueue");
+			System.out.println( Color.GREEN+"rece queue: "+queueR.toString());
+			System.out.println( Color.GREEN+"send queue: "+queueS.toString());
+
+			connection = factory.createConnection();
+			connection.start();
+
+			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			if(createConsumer) messageConsumer = session.createConsumer(queueR);
+			if(createConsumer) messageConsumer.setMessageListener(callback);
 			if(createProducer) messageProducer = session.createProducer(queueS);
 			System.out.println(Color.YELLOW+"Waiting for messages.."+Color.RESET);
 		} 
@@ -69,8 +69,8 @@ public class NW3client implements MessageListener
 		{
 			e.printStackTrace();
 		}
-    }
-    
+	}
+
 	/**
 	 * Callback method that runs when we receive a message.
 	 * Prints the message application properties and body.
@@ -227,8 +227,8 @@ public class NW3client implements MessageListener
 		}
 
 		System.setProperty("javax.net.ssl.keyStorePassword","PASSWORD");
-        System.setProperty("javax.net.ssl.trustStorePassword","PASSWORD");
-        //System.setProperty("javax.net.debug","ssl:handshake"); //use this to debug SSL errors
+		System.setProperty("javax.net.ssl.trustStorePassword","PASSWORD");
+		//System.setProperty("javax.net.debug","ssl:handshake"); //use this to debug SSL errors
 
 		NW3client c = new NW3client();
 		c.init(true, true, c);
@@ -236,27 +236,27 @@ public class NW3client implements MessageListener
 		BufferedReader commandLine = new java.io.BufferedReader(new InputStreamReader(System.in));
 		
 		while(true)
-        {
+		{
 			try
 			{
 				String s = commandLine.readLine();
 			
-	            if (s.equalsIgnoreCase("exit") || s.equalsIgnoreCase("e") ||  s.equalsIgnoreCase("c")) 
-	            {
-	                c.close();
-	                System.out.println("exiting..");
-	                System.exit(0);
-	            }
-	            else if(s.startsWith("s ") || s.startsWith("send "))
-	            {
-	            	c.sendMessage(s.substring(s.indexOf(" ")));
-	            }
-            } catch (IOException e)
+				if (s.equalsIgnoreCase("exit") || s.equalsIgnoreCase("e") ||  s.equalsIgnoreCase("c")) 
+				{
+					c.close();
+					System.out.println("exiting..");
+					System.exit(0);
+				}
+				else if(s.startsWith("s ") || s.startsWith("send "))
+				{
+					c.sendMessage(s.substring(s.indexOf(" ")));
+				}
+			} catch (IOException e)
 			{
 				e.printStackTrace();
 				break;
 			}
-        }
+		}
 	}
 
 
