@@ -3,3 +3,11 @@
 
  Remember to change the settings in src/main/resources/jndi.properties
  You also need to change the trust and key store in the main method in /src/main/java/no/vegvesen/interchange/NW3client.java
+
+#### Building the application
+To build locally and run the integration tests you can simply run
+```../mvnw install```
+> **Note**
+> The maven wrapper command is dependend on your OS, for Unix use: ```./mvnw```
+> Windows:
+> ```mvnw.cmd ```
